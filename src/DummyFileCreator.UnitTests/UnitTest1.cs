@@ -1,7 +1,16 @@
+using Xunit.Abstractions;
+
 namespace DummyFileCreator.UnitTests;
 
 public class UnitTest1
 {
+    private readonly ITestOutputHelper _testOutputHelper;
+
+    public UnitTest1(ITestOutputHelper testOutputHelper)
+    {
+        this._testOutputHelper = testOutputHelper;
+    }
+
     [Fact]
     public void Test1()
     {

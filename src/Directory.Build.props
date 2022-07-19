@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+
+  <!-- カスタムプロパティ -->
+  <PropertyGroup>
+    <IsTestProject>$(MSBuildProjectName.Contains('Tests'))</IsTestProject>
+  </PropertyGroup>
+
+  <!-- InternalsVisibleToUnitTest ファイル -->
+  <ItemGroup Condition=" '!$(IsTestProject)' == 'True' ">
+    <Compile Include="$(MSBuildThisFileDirectory)InternalsVisibleToUnitTest.cs" Link="InternalsVisibleToUnitTest.cs" />
+  </ItemGroup>
+
+  <!-- XML ドキュメントファイル -->
+  <PropertyGroup Condition=" '!$(IsTestProject)' == 'True' ">
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <!-- コード分析 -->
+  <PropertyGroup Condition=" '!$(IsTestProject)' == 'True' ">
+    <AnalysisLevel>latest-all</AnalysisLevel>
+  </PropertyGroup>
+
+  <!--StyleCop.Analyzer -->
+  <ItemGroup Condition=" '!$(IsTestProject)' == 'True' ">
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
+
+  <!-- ライセンスファイル -->
+  <PropertyGroup Condition=" '!$(IsTestProject)' == 'True' ">
+    <PackageLicenseFile>$(MSBuildThisFileDirectory)LICENSE</PackageLicenseFile>
+  </PropertyGroup>
+
+</Project>

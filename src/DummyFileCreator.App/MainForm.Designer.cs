@@ -30,13 +30,13 @@ partial class MainForm
             this.numericUpDownOfBufferSize = new System.Windows.Forms.NumericUpDown();
             this.comboBoxOfBufferSize = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.labelOfOutputPath = new System.Windows.Forms.Label();
             this.labelOfOutputSize = new System.Windows.Forms.Label();
+            this.labelOfOutputPath = new System.Windows.Forms.Label();
             this.labelOfBufferSize = new System.Windows.Forms.Label();
             this.labelOfOutputType = new System.Windows.Forms.Label();
             this.panelOfOutputType = new System.Windows.Forms.Panel();
-            this.radioButtonOfRandom = new System.Windows.Forms.RadioButton();
             this.radioButtonOfZeros = new System.Windows.Forms.RadioButton();
+            this.radioButtonOfRandom = new System.Windows.Forms.RadioButton();
             this.outputBrowsePanel.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownOfOutputSize)).BeginInit();
@@ -79,8 +79,8 @@ partial class MainForm
             // 
             // buttonToCreate
             // 
-            this.buttonToCreate.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.buttonToCreate.Location = new System.Drawing.Point(109, 133);
+            this.buttonToCreate.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.buttonToCreate.Location = new System.Drawing.Point(396, 133);
             this.buttonToCreate.Name = "buttonToCreate";
             this.buttonToCreate.Size = new System.Drawing.Size(135, 23);
             this.buttonToCreate.TabIndex = 15;
@@ -193,7 +193,6 @@ partial class MainForm
             this.comboBoxOfBufferSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxOfBufferSize.FormattingEnabled = true;
             this.comboBoxOfBufferSize.Items.AddRange(new object[] {
-            "B",
             "KB",
             "MB"});
             this.comboBoxOfBufferSize.Location = new System.Drawing.Point(66, 0);
@@ -228,16 +227,6 @@ partial class MainForm
             this.tableLayoutPanel1.Size = new System.Drawing.Size(534, 159);
             this.tableLayoutPanel1.TabIndex = 21;
             // 
-            // labelOfOutputPath
-            // 
-            this.labelOfOutputPath.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.labelOfOutputPath.Location = new System.Drawing.Point(3, 3);
-            this.labelOfOutputPath.Name = "labelOfOutputPath";
-            this.labelOfOutputPath.Size = new System.Drawing.Size(100, 23);
-            this.labelOfOutputPath.TabIndex = 21;
-            this.labelOfOutputPath.Text = "出力先パス";
-            this.labelOfOutputPath.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // labelOfOutputSize
             // 
             this.labelOfOutputSize.Anchor = System.Windows.Forms.AnchorStyles.Left;
@@ -247,6 +236,16 @@ partial class MainForm
             this.labelOfOutputSize.TabIndex = 22;
             this.labelOfOutputSize.Text = "出力サイズ";
             this.labelOfOutputSize.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // labelOfOutputPath
+            // 
+            this.labelOfOutputPath.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.labelOfOutputPath.Location = new System.Drawing.Point(3, 3);
+            this.labelOfOutputPath.Name = "labelOfOutputPath";
+            this.labelOfOutputPath.Size = new System.Drawing.Size(100, 23);
+            this.labelOfOutputPath.TabIndex = 21;
+            this.labelOfOutputPath.Text = "出力先パス";
+            this.labelOfOutputPath.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // labelOfBufferSize
             // 
@@ -278,18 +277,6 @@ partial class MainForm
             this.panelOfOutputType.Size = new System.Drawing.Size(422, 23);
             this.panelOfOutputType.TabIndex = 25;
             // 
-            // radioButtonOfRandom
-            // 
-            this.radioButtonOfRandom.AutoSize = true;
-            this.radioButtonOfRandom.Dock = System.Windows.Forms.DockStyle.Left;
-            this.radioButtonOfRandom.Location = new System.Drawing.Point(0, 0);
-            this.radioButtonOfRandom.Name = "radioButtonOfRandom";
-            this.radioButtonOfRandom.Size = new System.Drawing.Size(86, 23);
-            this.radioButtonOfRandom.TabIndex = 0;
-            this.radioButtonOfRandom.TabStop = true;
-            this.radioButtonOfRandom.Text = "ランダムデータ";
-            this.radioButtonOfRandom.UseVisualStyleBackColor = true;
-            // 
             // radioButtonOfZeros
             // 
             this.radioButtonOfZeros.AutoSize = true;
@@ -301,6 +288,18 @@ partial class MainForm
             this.radioButtonOfZeros.TabStop = true;
             this.radioButtonOfZeros.Text = "0x00 データ";
             this.radioButtonOfZeros.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonOfRandom
+            // 
+            this.radioButtonOfRandom.AutoSize = true;
+            this.radioButtonOfRandom.Dock = System.Windows.Forms.DockStyle.Left;
+            this.radioButtonOfRandom.Location = new System.Drawing.Point(0, 0);
+            this.radioButtonOfRandom.Name = "radioButtonOfRandom";
+            this.radioButtonOfRandom.Size = new System.Drawing.Size(86, 23);
+            this.radioButtonOfRandom.TabIndex = 0;
+            this.radioButtonOfRandom.TabStop = true;
+            this.radioButtonOfRandom.Text = "ランダムデータ";
+            this.radioButtonOfRandom.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 

@@ -22,12 +22,14 @@ public static class DummyFile
     /// <param name="sizeTextToCreate">ダミーファイルのサイズを表す文字列。</param>
     /// <param name="bufferSizeText">バッファサイズ。既定値は 10 MB(10_485_760)。</param>
     /// <param name="fillWithZeros">0x00 で埋める場合は <see langword="true" />。それ以外は <see langword="false" />。</param>
+    /// <param name="progress">進捗を処理するメソッドのデリゲート。</param>
     /// <returns>完了を表す <see cref="Task" />。</returns>
     public static Task CreateAsync(
         string filepathToCreate,
         string sizeTextToCreate,
         string bufferSizeText = DummyFile.DefaultBufferSizeText,
-        bool fillWithZeros = false)
+        bool fillWithZeros = false,
+        Action<long, long>? progress = null)
     {
         ArgumentNullException.ThrowIfNull(sizeTextToCreate);
         ArgumentNullException.ThrowIfNull(bufferSizeText);
@@ -41,7 +43,7 @@ public static class DummyFile
             throw new ArgumentOutOfRangeException(nameof(bufferSizeText));
         }
 
-        return DummyFile.CreateAsync(filepathToCreate, byteSizeToCreate, (int)bufferSize, fillWithZeros);
+        return DummyFile.CreateAsync(filepathToCreate, byteSizeToCreate, (int)bufferSize, fillWithZeros, progress);
     }
 
     /// <summary>
@@ -51,12 +53,14 @@ public static class DummyFile
     /// <param name="sizeTextToCreate">ダミーファイルのサイズを表す文字列。</param>
     /// <param name="bufferSize">バッファサイズ。既定値は 10 MB(10_485_760)。</param>
     /// <param name="fillWithZeros">0x00 で埋める場合は <see langword="true" />。それ以外は <see langword="false" />。</param>
+    /// <param name="progress">進捗を処理するメソッドのデリゲート。</param>
     /// <returns>完了を表す <see cref="Task" />。</returns>
     public static Task CreateAsync(
         string filepathToCreate,
         string sizeTextToCreate,
         int bufferSize = 10_485_760,
-        bool fillWithZeros = false)
+        bool fillWithZeros = false,
+        Action<long, long>? progress = null)
     {
         ArgumentNullException.ThrowIfNull(sizeTextToCreate);
         if (!sizeTextToCreate.TryParseToByteSize(out var byteSizeToCreate))
@@ -64,7 +68,7 @@ public static class DummyFile
             throw new ArgumentOutOfRangeException(nameof(sizeTextToCreate));
         }
 
-        return DummyFile.CreateAsync(filepathToCreate, byteSizeToCreate, bufferSize, fillWithZeros);
+        return DummyFile.CreateAsync(filepathToCreate, byteSizeToCreate, bufferSize, fillWithZeros, progress);
     }
 
     /// <summary>
@@ -74,12 +78,14 @@ public static class DummyFile
     /// <param name="byteSizeToCreate">ダミーファイルのバイトサイズ。</param>
     /// <param name="bufferSize">バッファサイズ。既定値は 10 MB(10_485_760)。</param>
     /// <param name="fillWithZeros">0x00 で埋める場合は <see langword="true" />。それ以外は <see langword="false" />。</param>
+    /// <param name="progress">進捗を処理するメソッドのデリゲート。</param>
     /// <returns>完了を表す <see cref="Task" />。</returns>
     public static async Task CreateAsync(
         string filepathToCreate,
         long byteSizeToCreate,
         int bufferSize = 10_485_760,
-        bool fillWithZeros = false)
+        bool fillWithZeros = false,
+        Action<long, long>? progress = null)
     {
         ArgumentNullException.ThrowIfNull(filepathToCreate);
 
@@ -97,6 +103,8 @@ public static class DummyFile
             {
                 writtenBytes += await DummyFile.WriteRandomText(writer).ConfigureAwait(false);
             }
+
+            progress?.Invoke(writtenBytes, byteSizeToCreate);
         }
     }
 

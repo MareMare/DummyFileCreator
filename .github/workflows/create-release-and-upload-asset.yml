@@ -40,20 +40,18 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: 🚀 Publish DummyFileCreator.App
-        working-directory: src
-        run: dotnet publish --configuration Release -p:PublishProfile=FolderProfile .\DummyFileCreator.App\DummyFileCreator.App.csproj
+        run: dotnet publish --configuration Release -p:PublishProfile=FolderProfile .\src\DummyFileCreator.App\DummyFileCreator.App.csproj
       - name: Archive
         shell: pwsh
         run: |
-          Compress-Archive -Path ".\DummyFileCreator.App\bin\publish\DummyFileCreator.App.exe" -DestinationPath ".\DummyFileCreator.App.zip"
+          Compress-Archive -Path ".\src\DummyFileCreator.App\bin\publish\DummyFileCreator.App.exe" -DestinationPath ".\DummyFileCreator.App.zip"
 
       - name: 🚀 Publish DummyFileCreator.Console
-        working-directory: src
-        run: dotnet publish --configuration Release -p:PublishProfile=FolderProfile .\DummyFileCreator.Console\DummyFileCreator.Console.csproj
+        run: dotnet publish --configuration Release -p:PublishProfile=FolderProfile .\src\DummyFileCreator.Console\DummyFileCreator.Console.csproj
       - name: Archive
         shell: pwsh
         run: |
-          Compress-Archive -Path ".\DummyFileCreator.Console\bin\publish\DummyFileCreator.Console.exe" -DestinationPath ".\DummyFileCreator.Console.zip"
+          Compress-Archive -Path ".\src\DummyFileCreator.Console\bin\publish\DummyFileCreator.Console.exe" -DestinationPath ".\DummyFileCreator.Console.zip"
 
       - name: 📝 Create Release
         id: create_release

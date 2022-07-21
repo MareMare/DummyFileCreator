@@ -20,8 +20,6 @@ jobs:
         include:
           - os: windows-latest
             osName: Windows
-          - os: ubuntu-latest
-            osName: ubuntu
 
     name: 🚀 [${{ matrix.configuration }}] Build and Test on ${{ matrix.osName }}
     runs-on: ${{ matrix.os }}

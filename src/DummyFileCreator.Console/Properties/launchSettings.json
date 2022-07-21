@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DummyFileCreator.Console": {
+      "commandName": "Project",
+      "commandLineArgs": "--file=.\\dummy.txt --size=10KB --buffer=5KB --fillWithZeros"
+    }
+  }
+}

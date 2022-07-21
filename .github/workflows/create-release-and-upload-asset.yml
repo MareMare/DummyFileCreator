@@ -1,0 +1,89 @@
+name: Create Release and Upload Asset
+
+# https://github.com/actions/upload-release-asset
+
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+jobs:
+  build:
+    name: Upload Release Asset
+    runs-on: windows-latest
+    
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: ✨ Set up .NET 6.0
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 6.0.x
+    
+      # # https://github.community/t/how-to-get-just-the-tag-name/16241/17
+      # # ${{ steps.get_version.outputs.VERSION }}
+      # - name: Get the version
+      #   id: get_version
+      #   run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      #   shell: bash
+      
+      - name: 🚚 Restore dependencies
+        working-directory: src
+        run: dotnet restore
+
+      - name: 🛠️ Build
+        working-directory: src
+        run: dotnet build --configuration Release --no-restore
+
+      - name: 🚀 Publish DummyFileCreator.App
+        working-directory: src
+        run: dotnet publish --configuration Release -p:PublishProfile=FolderProfile .\DummyFileCreator.App\DummyFileCreator.App.csproj
+      - name: Archive
+        shell: pwsh
+        run: |
+          Compress-Archive -Path ".\DummyFileCreator.App\bin\publish\DummyFileCreator.App.exe" -DestinationPath ".\DummyFileCreator.App.zip"
+
+      - name: 🚀 Publish DummyFileCreator.Console
+        working-directory: src
+        run: dotnet publish --configuration Release -p:PublishProfile=FolderProfile .\DummyFileCreator.Console\DummyFileCreator.Console.csproj
+      - name: Archive
+        shell: pwsh
+        run: |
+          Compress-Archive -Path ".\DummyFileCreator.Console\bin\publish\DummyFileCreator.Console.exe" -DestinationPath ".\DummyFileCreator.Console.zip"
+
+      - name: 📝 Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            TBD
+          draft: true
+          prerelease: true
+
+      - name: 🚢 Upload DummyFileCreator.App Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: .\DummyFileCreator.App.zip
+          asset_name: DummyFileCreator.App.zip
+          asset_content_type: application/zip
+
+      - name: 🚢 Upload DummyFileCreator.Console Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: .\DummyFileCreator.Console.zip
+          asset_name: DummyFileCreator.Console.zip
+          asset_content_type: application/zip

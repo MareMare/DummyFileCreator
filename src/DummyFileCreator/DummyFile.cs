@@ -89,22 +89,27 @@ public static class DummyFile
     {
         ArgumentNullException.ThrowIfNull(filepathToCreate);
 
-        using var stream = File.Open(filepathToCreate, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
-        using var writer = new StreamWriter(stream, bufferSize: bufferSize);
-
-        var writtenBytes = 0;
-        while (writtenBytes < byteSizeToCreate)
+        var stream = File.Open(filepathToCreate, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+        await using (stream)
         {
-            if (fillWithZeros)
+            var writer = new StreamWriter(stream, bufferSize: bufferSize);
+            await using (writer)
             {
-                writtenBytes += await DummyFile.WriteZeroValue(writer).ConfigureAwait(false);
-            }
-            else
-            {
-                writtenBytes += await DummyFile.WriteRandomText(writer).ConfigureAwait(false);
-            }
+                var writtenBytes = 0;
+                while (writtenBytes < byteSizeToCreate)
+                {
+                    if (fillWithZeros)
+                    {
+                        writtenBytes += await DummyFile.WriteZeroValue(writer).ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        writtenBytes += await DummyFile.WriteRandomText(writer).ConfigureAwait(false);
+                    }
 
-            progress?.Invoke(writtenBytes, byteSizeToCreate);
+                    progress?.Invoke(writtenBytes, byteSizeToCreate);
+                }
+            }
         }
     }
 

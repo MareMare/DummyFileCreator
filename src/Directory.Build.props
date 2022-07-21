@@ -1,6 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project>
 
+  <!-- ソリューションに含まれるすべてのプロジェクトに共通のバージョンを設定します。-->
+  <PropertyGroup>
+    <Version>0.0.1</Version>
+  </PropertyGroup>
+
   <!-- カスタムプロパティ -->
   <PropertyGroup>
     <IsTestProject>$(MSBuildProjectName.Contains('Tests'))</IsTestProject>

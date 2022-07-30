@@ -13,6 +13,9 @@ updates:
       # 日本標準時 (UTC +09:00) に nuget の更新をチェックします。
       time: "04:00"
       timezone: "Asia/Tokyo"
+    # レビュー担当者を追加します。
+    reviewers:
+      - "MareMare"
     # nuget プルリクエストのラベルを指定します。
     labels:
       - "dependencies"

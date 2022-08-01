@@ -89,51 +89,31 @@ public static class DummyFile
     {
         ArgumentNullException.ThrowIfNull(filepathToCreate);
 
-        var stream = File.Open(filepathToCreate, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
-        await using (stream)
+        DummyFileWriter? fileWriter = null;
+        try
         {
-            var writer = new StreamWriter(stream, bufferSize: bufferSize);
-            await using (writer)
+            fileWriter = new DummyFileWriter(filepathToCreate, bufferSize);
+            var writtenBytes = 0;
+            while (writtenBytes < byteSizeToCreate)
             {
-                var writtenBytes = 0;
-                while (writtenBytes < byteSizeToCreate)
+                if (fillWithZeros)
                 {
-                    if (fillWithZeros)
-                    {
-                        writtenBytes += await DummyFile.WriteZeroValue(writer).ConfigureAwait(false);
-                    }
-                    else
-                    {
-                        writtenBytes += await DummyFile.WriteRandomText(writer).ConfigureAwait(false);
-                    }
-
-                    progress?.Invoke(writtenBytes, byteSizeToCreate);
+                    writtenBytes += await fileWriter.WriteZeroValue().ConfigureAwait(false);
                 }
+                else
+                {
+                    writtenBytes += await fileWriter.WriteRandomText().ConfigureAwait(false);
+                }
+
+                progress?.Invoke(writtenBytes, byteSizeToCreate);
             }
         }
-    }
-
-    /// <summary>
-    /// 非同期操作として、0を書き込みます。
-    /// </summary>
-    /// <param name="writer"><see cref="TextWriter"/>。</param>
-    /// <returns>書き込んだバイトサイズ。</returns>
-    private static async Task<int> WriteZeroValue(TextWriter writer)
-    {
-        ReadOnlyMemory<char> dataToFill = new char[128];
-        await writer.WriteAsync(dataToFill).ConfigureAwait(false);
-        return dataToFill.Length;
-    }
-
-    /// <summary>
-    /// 非同期操作として、ランダムな文字列を書き込みます。
-    /// </summary>
-    /// <param name="writer"><see cref="TextWriter"/>。</param>
-    /// <returns>書き込んだバイトサイズ。</returns>
-    private static async Task<int> WriteRandomText(TextWriter writer)
-    {
-        var dataToWrite = Password.Generate(128, 32).AsMemory();
-        await writer.WriteAsync(dataToWrite).ConfigureAwait(false);
-        return dataToWrite.Length;
+        finally
+        {
+            if (fileWriter is not null)
+            {
+                await fileWriter.DisposeAsync().ConfigureAwait(false);
+            }
+        }
     }
 }

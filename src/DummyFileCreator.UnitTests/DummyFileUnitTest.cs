@@ -43,4 +43,20 @@ public class DummyFileUnitTest
 
         this._testOutputHelper.WriteLine($"要求サイズ={sizeText} 生成サイズ={result.Length:n0} バッファ={bufferSizeText} IsZero={fillWithZeros} 所要時間={sw.Elapsed}");
     }
+
+    [Fact]
+    public async Task DummyFile_CreateAsync_And_DisposeAsync_Test()
+    {
+        var path = "dummy.txt";
+
+        // First creation.
+        await DummyFile.CreateAsync(path, "100MB", "5MB", fillWithZeros: true).ConfigureAwait(false);
+        // Second creation of the same file path.
+        await DummyFile.CreateAsync(path, "100MB", "5MB", fillWithZeros: false).ConfigureAwait(false);
+
+        // Check if it can open.
+        var stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        await using var streamAsyncDisposable = stream.ConfigureAwait(false);
+        Assert.True(stream.CanRead);
+    }
 }

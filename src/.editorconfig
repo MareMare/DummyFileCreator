@@ -119,7 +119,8 @@ dotnet_diagnostic.SA1623.severity = none
 dotnet_diagnostic.SA1629.severity = none
 # SA1642: Constructor summary documentation should begin with standard text
 dotnet_diagnostic.SA1642.severity = none
-
+# SA1643: Destructor summary documentation should begin with standard text
+dotnet_diagnostic.SA1643.severity = none
 
 [*.vb]
 #### 命名スタイル ####

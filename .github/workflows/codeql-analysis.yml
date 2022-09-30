@@ -24,7 +24,7 @@ on:
 jobs:
   analyze:
     name: Analyze
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     permissions:
       actions: read
       contents: read
@@ -40,6 +40,19 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+
+    - name: ✨ Set up .NET 6.0
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+
+    - name: 🚚 Restore dependencies
+      working-directory: src
+      run: dotnet restore
+
+    - name: 🛠️ Build
+      working-directory: src
+      run: dotnet build --configuration Release --no-restore
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
@@ -68,19 +81,6 @@ jobs:
     # - run: |
     #   echo "Run, Build Application using script"
     #   ./location_of_script_within_repo/buildscript.sh
-
-    - name: ✨ Set up .NET 6.0
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: 6.0.x
-
-    - name: 🚚 Restore dependencies
-      working-directory: src
-      run: dotnet restore
-
-    - name: 🛠️ Build
-      working-directory: src
-      run: dotnet build --configuration Release --no-restore
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2

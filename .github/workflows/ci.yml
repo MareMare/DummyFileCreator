@@ -3,49 +3,33 @@ name: .NET Build & UnitTests
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches:
+    - main
     paths:
-      - "src/**"
+    - "src/**"
   pull_request:
-    branches: [ main ]
     paths:
-      - "src/**"
+    - "src/**"
+  
+env:
+  CONFIGURATION: Release
+  DOTNET_CORE_VERSION: 6.0.x
+  WORKING_DIRECTORY: src
+  TESTING_DIRECTORY: src
 
 jobs:
   build-and-test:
-
-    strategy:
-      matrix:
-        configuration: [ Release ]
-        include:
-          - os: windows-latest
-            osName: Windows
-
-    name: 🚀 [${{ matrix.configuration }}] Build and Test on ${{ matrix.osName }}
-    runs-on: ${{ matrix.os }}
+    runs-on: windows-latest
     steps:
-      - name: 🛒 Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: ✨ Set up .NET 6.0
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: 6.0.x
-
-      - name: 🚚 Restore dependencies
-        working-directory: src
-        run: dotnet restore
-
-      - name: 🛠️ Build
-        working-directory: src
-        run: dotnet build --configuration $env:Configuration --no-restore
-        env:
-          Configuration: ${{ matrix.configuration }}
-
-      - name: 🧪 Test
-        working-directory: src
-        run: dotnet test --configuration $env:Configuration --no-build --verbosity normal --filter Category!=local
-        env:
-          Configuration: ${{ matrix.configuration }}
+    - name: 🛒 Checkout
+      uses: actions/checkout@v3
+    - name: ✨ Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
+    - name: 🚚 Restore
+      run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
+    - name: 🛠️ Build
+      run: dotnet build "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
+    - name: 🧪 Test
+      run: dotnet test "${{ env.TESTING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-build --verbosity normal --filter Category!=local

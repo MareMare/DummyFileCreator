@@ -22,7 +22,7 @@ jobs:
     name: Test on ${{ matrix.osName }}
     permissions:
       contents: read
-    uses: MareMare/ReusableWorkflows/.github/workflows/ci.net6.yml@main
+    uses: MareMare/ReusableWorkflows/.github/workflows/ci.net7.yml@main
     with:
       runner-os: ${{ matrix.os }}
       working-directory: src

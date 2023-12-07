@@ -20,7 +20,7 @@ jobs:
           fetch-depth: 0
 
       - name: ✨ Set up .NET 7.0
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 7.0.x
     

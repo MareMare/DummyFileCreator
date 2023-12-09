@@ -1,4 +1,4 @@
-name: .NET Build & UnitTests
+name: CI
 
 on:
   workflow_dispatch:
@@ -12,20 +12,20 @@ on:
     - "src/**"
 
 jobs:
-  build-and-test:
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: windows-latest
-            osName: Windows
-    name: Test on ${{ matrix.osName }}
-    permissions:
-      contents: read
-    uses: MareMare/ReusableWorkflows/.github/workflows/ci.net7.yml@main
-    with:
-      runner-os: ${{ matrix.os }}
-      working-directory: src
-      testing-directory: src
-      run-unittest: 'true'
-      unittest-filter: 'Category!=local'
+  ci:
+    name: CI on windows
+    runs-on: windows-latest
+
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v4.1.1
+      - name: ✨ Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: 🚚 Restore
+        run: dotnet restore src
+      - name: 🛠️ Build
+        run: dotnet build src --configuration Release --no-restore
+      - name: 🧪 Test
+        run: dotnet test src --configuration Release --no-build --verbosity normal --filter 'Category!=local'

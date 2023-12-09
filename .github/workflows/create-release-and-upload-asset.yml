@@ -19,10 +19,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: ✨ Set up .NET 7.0
+      - name: ✨ Set up .NET 8.0
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 7.0.x
+          dotnet-version: 8.0.x
     
       # # https://github.community/t/how-to-get-just-the-tag-name/16241/17
       # # ${{ steps.get_version.outputs.VERSION }}
@@ -32,12 +32,10 @@ jobs:
       #   shell: bash
       
       - name: 🚚 Restore dependencies
-        working-directory: src
-        run: dotnet restore
+        run: dotnet restore src
 
       - name: 🛠️ Build
-        working-directory: src
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build src --configuration Release --no-restore
 
       - name: 🚀 Publish DummyFileCreator.App
         run: dotnet publish --configuration Release -p:PublishProfile=FolderProfile .\src\DummyFileCreator.App\DummyFileCreator.App.csproj

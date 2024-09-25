@@ -93,7 +93,7 @@ public static class DummyFile
         try
         {
             fileWriter = new DummyFileWriter(filepathToCreate, bufferSize);
-            var writtenBytes = 0;
+            long writtenBytes = 0;
             while (writtenBytes < byteSizeToCreate)
             {
                 if (fillWithZeros)

@@ -58,15 +58,16 @@ internal class DummyFileWriter : IDisposable, IAsyncDisposable
     /// <summary>
     /// 非同期操作として、0を書き込みます。
     /// </summary>
+    /// <param name="bytesToWrite">書き込むバイト数。</param>
     /// <returns>書き込んだバイトサイズ。</returns>
-    public async Task<int> WriteZeroValue()
+    public async Task<long> WriteZeroValue(long bytesToWrite)
     {
         if (this._writer is null)
         {
             throw new InvalidOperationException();
         }
 
-        ReadOnlyMemory<char> dataToFill = new char[128];
+        ReadOnlyMemory<char> dataToFill = new char[bytesToWrite];
         await this._writer.WriteAsync(dataToFill).ConfigureAwait(false);
         return dataToFill.Length;
     }
@@ -74,17 +75,27 @@ internal class DummyFileWriter : IDisposable, IAsyncDisposable
     /// <summary>
     /// 非同期操作として、ランダムな文字列を書き込みます。
     /// </summary>
+    /// <param name="bytesToWrite">書き込むバイト数。</param>
     /// <returns>書き込んだバイトサイズ。</returns>
-    public async Task<int> WriteRandomText()
+    public async Task<long> WriteRandomText(long bytesToWrite)
     {
         if (this._writer is null)
         {
             throw new InvalidOperationException();
         }
 
-        var dataToWrite = Password.Generate(128, 32).AsMemory();
-        await this._writer.WriteAsync(dataToWrite).ConfigureAwait(false);
-        return dataToWrite.Length;
+        long totalLength = 0;
+        const int maxChunkSize = 128; // Password.Generate の制約に合わせた最大チャンクサイズです。
+        while (totalLength < bytesToWrite)
+        {
+            var remainingLength = bytesToWrite - totalLength;
+            var currentChunkSize = (int)Math.Min(maxChunkSize, remainingLength);
+            var dataToWrite = Password.Generate(currentChunkSize, currentChunkSize / 4).AsMemory();
+            await this._writer.WriteAsync(dataToWrite).ConfigureAwait(false);
+            totalLength += dataToWrite.Length;
+        }
+
+        return totalLength;
     }
 
     /// <summary>

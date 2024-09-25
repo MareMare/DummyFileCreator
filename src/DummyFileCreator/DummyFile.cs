@@ -96,13 +96,15 @@ public static class DummyFile
             long writtenBytes = 0;
             while (writtenBytes < byteSizeToCreate)
             {
+                var remainingBytes = byteSizeToCreate - writtenBytes;
+                var bytesToWrite = Math.Min(bufferSize, remainingBytes);
                 if (fillWithZeros)
                 {
-                    writtenBytes += await fileWriter.WriteZeroValue().ConfigureAwait(false);
+                    writtenBytes += await fileWriter.WriteZeroValue(bytesToWrite).ConfigureAwait(false);
                 }
                 else
                 {
-                    writtenBytes += await fileWriter.WriteRandomText().ConfigureAwait(false);
+                    writtenBytes += await fileWriter.WriteRandomText(bytesToWrite).ConfigureAwait(false);
                 }
 
                 progress?.Invoke(writtenBytes, byteSizeToCreate);

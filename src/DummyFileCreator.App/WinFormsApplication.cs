@@ -14,7 +14,7 @@ namespace DummyFileCreator.App
     /// <summary>
     /// 汎用ホストに対応した <see cref="System.Windows.Forms" /> アプリケーションを表します。
     /// </summary>
-    public static class WinFormsApplication
+    internal static class WinFormsApplication
     {
         /// <summary>
         /// 現在のスレッドで標準のアプリケーションメッセージループの実行を開始し、<typeparamref name="TMainForm" /> フォームを表示します。

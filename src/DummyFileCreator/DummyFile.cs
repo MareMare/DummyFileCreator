@@ -89,33 +89,22 @@ public static class DummyFile
     {
         ArgumentNullException.ThrowIfNull(filepathToCreate);
 
-        DummyFileWriter? fileWriter = null;
-        try
+        using var fileWriter = new DummyFileWriter(filepathToCreate, bufferSize);
+        long writtenBytes = 0;
+        while (writtenBytes < byteSizeToCreate)
         {
-            fileWriter = new DummyFileWriter(filepathToCreate, bufferSize);
-            long writtenBytes = 0;
-            while (writtenBytes < byteSizeToCreate)
+            var remainingBytes = byteSizeToCreate - writtenBytes;
+            var bytesToWrite = Math.Min(bufferSize, remainingBytes);
+            if (fillWithZeros)
             {
-                var remainingBytes = byteSizeToCreate - writtenBytes;
-                var bytesToWrite = Math.Min(bufferSize, remainingBytes);
-                if (fillWithZeros)
-                {
-                    writtenBytes += await fileWriter.WriteZeroValue(bytesToWrite).ConfigureAwait(false);
-                }
-                else
-                {
-                    writtenBytes += await fileWriter.WriteRandomText(bytesToWrite).ConfigureAwait(false);
-                }
+                writtenBytes += await fileWriter.WriteZeroValue(bytesToWrite).ConfigureAwait(false);
+            }
+            else
+            {
+                writtenBytes += await fileWriter.WriteRandomText(bytesToWrite).ConfigureAwait(false);
+            }
 
-                progress?.Invoke(writtenBytes, byteSizeToCreate);
-            }
-        }
-        finally
-        {
-            if (fileWriter is not null)
-            {
-                await fileWriter.DisposeAsync().ConfigureAwait(false);
-            }
+            progress?.Invoke(writtenBytes, byteSizeToCreate);
         }
     }
 }

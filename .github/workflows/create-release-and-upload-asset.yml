@@ -19,10 +19,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: ✨ Set up .NET 8.0
+      - name: ✨ Set up .NET 10.0
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 10.0.x
     
       # # https://github.community/t/how-to-get-just-the-tag-name/16241/17
       # # ${{ steps.get_version.outputs.VERSION }}

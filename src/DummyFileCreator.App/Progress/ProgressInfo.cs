@@ -10,7 +10,7 @@ namespace DummyFileCreator.App.Progress;
 /// <summary>
 /// 進捗情報を表します。
 /// </summary>
-public class ProgressInfo
+internal class ProgressInfo
 {
     /// <summary>
     /// <see cref="ProgressInfo" /> クラスの新しいインスタンスを生成します。

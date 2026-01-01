@@ -35,7 +35,7 @@ public class DummyFileUnitTest
         Assert.True(parsed1);
 
         var sw = Stopwatch.StartNew();
-        await DummyFile.CreateAsync(path, sizeText, bufferSizeText, fillWithZeros).ConfigureAwait(false);
+        await DummyFile.CreateAsync(path, sizeText, bufferSizeText, fillWithZeros).ConfigureAwait(true);
         sw.Stop();
 
         var result = new FileInfo(path);
@@ -50,9 +50,9 @@ public class DummyFileUnitTest
         var path = "dummy.txt";
 
         // First creation.
-        await DummyFile.CreateAsync(path, "100MB", "5MB", fillWithZeros: true).ConfigureAwait(false);
+        await DummyFile.CreateAsync(path, "100MB", "5MB", fillWithZeros: true).ConfigureAwait(true);
         // Second creation of the same file path.
-        await DummyFile.CreateAsync(path, "100MB", "5MB", fillWithZeros: false).ConfigureAwait(false);
+        await DummyFile.CreateAsync(path, "100MB", "5MB", fillWithZeros: false).ConfigureAwait(true);
 
         // Check if it can open.
         var stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);

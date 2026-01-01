@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/ソリューション項目/">
+    <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
+    <File Path="InternalsVisibleToUnitTest.cs" />
+    <File Path="stylecop.json" />
+  </Folder>
+  <Project Path="DummyFileCreator.App/DummyFileCreator.App.csproj" />
+  <Project Path="DummyFileCreator.Console/DummyFileCreator.Console.csproj" />
+  <Project Path="DummyFileCreator.UnitTests/DummyFileCreator.UnitTests.csproj" />
+  <Project Path="DummyFileCreator/DummyFileCreator.csproj" />
+</Solution>

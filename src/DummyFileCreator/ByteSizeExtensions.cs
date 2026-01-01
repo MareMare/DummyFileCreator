@@ -60,7 +60,7 @@ internal static class ByteSizeExtensions
     {
         if (decimalPlaces < 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(decimalPlaces));
+            ArgumentOutOfRangeException.ThrowIfNegative(decimalPlaces);
         }
 
         switch (value)

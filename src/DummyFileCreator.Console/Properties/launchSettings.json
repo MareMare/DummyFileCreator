@@ -2,7 +2,7 @@
   "profiles": {
     "DummyFileCreator.Console": {
       "commandName": "Project",
-      "commandLineArgs": "--file=.\\dummy.txt --size=10KB --buffer=5KB --fillWithZeros"
+      "commandLineArgs": "--file=.\\dummy.txt --size=100MB --buffer=5KB --fillWithZeros"
     }
   }
 }

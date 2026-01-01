@@ -10,7 +10,7 @@ namespace DummyFileCreator.App.Progress;
 /// <summary>
 /// 進行状況の報告を提供するインターフェイスを表します。
 /// </summary>
-public interface IProgressReporter
+internal interface IProgressReporter
 {
     /// <summary>
     /// 進行状況の値が報告されたときに発生するイベントを表します。

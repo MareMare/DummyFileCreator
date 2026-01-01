@@ -13,7 +13,7 @@ namespace DummyFileCreator.App;
 /// <summary>
 /// メインフォームを表します。
 /// </summary>
-public partial class MainForm : Form
+internal partial class MainForm : Form
 {
     /// <summary>非同期操作の実行時間としての最低時間を表します。</summary>
     private static readonly TimeSpan DelayTimeSpan = TimeSpan.FromSeconds(2);

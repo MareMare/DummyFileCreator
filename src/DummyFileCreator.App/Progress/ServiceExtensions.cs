@@ -12,7 +12,7 @@ namespace DummyFileCreator.App.Progress;
 /// <summary>
 /// <see cref="IServiceCollection" /> の拡張機能を提供します。
 /// </summary>
-public static class ServiceExtensions
+internal static class ServiceExtensions
 {
     /// <summary>
     /// <see cref="ProgressForm" /> に関するサービスの依存関係を追加します。

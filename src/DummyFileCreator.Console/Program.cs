@@ -9,30 +9,30 @@ using System.CommandLine;
 using DummyFileCreator;
 using ShellProgressBar;
 
-var outputFilePathOption = new Option<FileInfo>(
-    aliases: new[] { "--file", "-f" },
-    description: "Specify the full path of the file to be generated.")
+var outputFilePathOption = new Option<FileInfo>("--file", "-f")
 {
-    IsRequired = true,
+    Description = "Specify the full path of the file to be generated.",
+    Required = true,
 };
 
-var outputSizeOption = new Option<string>(
-    aliases: new[] { "--size", "-s" },
-    description: "Specifies the size of the file to be generated.The default is \"10MB\".",
-    getDefaultValue: () => "10MB")
+var outputSizeOption = new Option<string>("--size", "-s")
 {
-    IsRequired = true,
+    Description = "Specifies the size of the file to be generated.The default is \"10MB\".",
+    DefaultValueFactory = _ => "10MB",
+    Required = true,
 };
 
-var bufferSizeOption = new Option<string>(
-    aliases: new[] { "--buffer", "-b" },
-    description: "Specifies the buffer size when generating files. The default is \"10MB\".",
-    getDefaultValue: () => "10MB");
+var bufferSizeOption = new Option<string>("--buffer", "-b")
+{
+    Description = "Specifies the buffer size when generating files. The default is \"10MB\".",
+    DefaultValueFactory = _ => "10MB",
+};
 
-var fillWithZerosOption = new Option<bool>(
-    aliases: new[] { "--fillWithZeros", "-z" },
-    description: "Specify if you want to fill with zeros.If not specified, it will be filled with a random string.",
-    getDefaultValue: () => false);
+var fillWithZerosOption = new Option<bool>("--fillWithZeros", "-z")
+{
+    Description = "Specify if you want to fill with zeros.If not specified, it will be filled with a random string.",
+    DefaultValueFactory = _ => false,
+};
 
 var command = new RootCommand(description: "Dummy File Generation Tool.")
 {
@@ -42,15 +42,19 @@ var command = new RootCommand(description: "Dummy File Generation Tool.")
     fillWithZerosOption,
 };
 
-command.SetHandler(
-    async (outputFilePath, outputSize, bufferSize, fillWithZeros) =>
-        await ExecuteCommand(outputFilePath, outputSize, bufferSize, fillWithZeros).ConfigureAwait(false),
-    outputFilePathOption,
-    outputSizeOption,
-    bufferSizeOption,
-    fillWithZerosOption);
-
-await command.InvokeAsync(args).ConfigureAwait(false);
+command.Options.Add(outputFilePathOption);
+command.Options.Add(outputSizeOption);
+command.Options.Add(bufferSizeOption);
+command.Options.Add(fillWithZerosOption);
+command.SetAction(async parseResult =>
+{
+    var outputFilePath = parseResult.GetRequiredValue(outputFilePathOption);
+    var outputSize = parseResult.GetRequiredValue(outputSizeOption);
+    var bufferSize = parseResult.GetRequiredValue(bufferSizeOption);
+    var fillWithZeros = parseResult.GetRequiredValue(fillWithZerosOption);
+    await ExecuteCommand(outputFilePath, outputSize, bufferSize, fillWithZeros).ConfigureAwait(false);
+});
+await command.Parse(args).InvokeAsync().ConfigureAwait(false);
 
 static async ValueTask ExecuteCommand(
     FileSystemInfo outputFilePath,

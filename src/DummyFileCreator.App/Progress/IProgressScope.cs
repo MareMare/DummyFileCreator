@@ -10,7 +10,7 @@ namespace DummyFileCreator.App.Progress;
 /// <summary>
 /// 進捗表示する範囲を提供するインターフェイスを表します。
 /// </summary>
-public interface IProgressScope : IAsyncDisposable
+internal interface IProgressScope : IAsyncDisposable
 {
     /// <summary>
     /// 進行状況の報告者を取得します。

@@ -10,7 +10,7 @@ namespace DummyFileCreator.App.Progress;
 /// <summary>
 /// 進行状況の報告を提供します。
 /// </summary>
-public class ProgressReporter : Progress<ProgressInfo>, IProgressReporter
+internal class ProgressReporter : Progress<ProgressInfo>, IProgressReporter
 {
     /// <summary>完了または失敗のレポートに対するデフォルトのタイムアウト時間を表します。</summary>
     private readonly TimeSpan _defaultTimeout;

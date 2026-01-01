@@ -5,6 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.ComponentModel;
 using Microsoft.Extensions.Logging;
 
 namespace DummyFileCreator.App.Progress;
@@ -12,7 +13,7 @@ namespace DummyFileCreator.App.Progress;
 /// <summary>
 /// 進捗画面のユーザーインターフェイスを構成するウィンドウを表します。
 /// </summary>
-public partial class ProgressForm : Form
+internal partial class ProgressForm : Form
 {
     /// <summary><see cref="ILogger{T}" /> を表します。</summary>
     private readonly ILogger<ProgressForm> _logger;
@@ -41,6 +42,7 @@ public partial class ProgressForm : Form
     /// 値を表す <see cref="string" /> 型。
     /// <para>タイトル。既定値は null です。</para>
     /// </value>
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public string? Title
     {
         get => this.Text;
@@ -54,6 +56,7 @@ public partial class ProgressForm : Form
     /// 値を表す <see cref="string" /> 型。
     /// <para>メッセージ。既定値は null です。</para>
     /// </value>
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public string? Message
     {
         get => this.labelMessage.Text;
